@@ -4,7 +4,8 @@
     "module": "commonjs",                                /* Specify what module code is generated. */
     "outDir": "dist", 
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/*.ts"
