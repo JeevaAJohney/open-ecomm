@@ -1,14 +1,29 @@
-import { User } from '../model/user';
+import { getConnection } from "typeorm";
+import { UserLoginDto, UserSignupDto } from "../../dto/user.dto";
+import { User } from "../../entities/user.entity";
 
-const users: User[] = [];
 
-export const loginUser = (username: string, password: string): User | null => {
-    const user = users.find(u => u.username === username && u.password === password);
-    return user || null;
+export const loginUser = async (userLoginDetails: UserLoginDto): Promise<User | null> => {
+    const { username, password } = userLoginDetails;
+    const userRepository = getConnection().getRepository(User);
+    const user = await userRepository.findOne({
+        where: {
+            username, 
+            password, 
+        }
+    })
+    return user;
 };
 
-export const signupUser = (username: string, password: string): User | null => {
-    const newUser: User = { id: users.length + 1, username, password };
-    users.push(newUser);
+export const signupUser = async (userSignupDetails: UserSignupDto): Promise<User | null> => {
+    const { username , password, email, phone } = userSignupDetails;
+    const userRepository = getConnection().getRepository(User)
+    const userEntity = userRepository.create({
+        username,
+        password,
+        email, 
+        phone
+    });
+    const newUser = await userRepository.save(userEntity)
     return newUser;
 };

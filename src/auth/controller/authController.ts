@@ -3,9 +3,8 @@ import { Request, Response } from 'express';
 import { loginUser, signupUser } from '../service/authService';
 
 
-export const login = (req: Request, res: Response) => {
-    const { username, password } = req.body; 
-    const user = loginUser(username, password);
+export const login = async (req: Request, res: Response) => {
+    const user = await loginUser(req.body);
     if (user) {
         res.status(200).json({ message: 'Login successful', user });
     } else {
@@ -13,10 +12,8 @@ export const login = (req: Request, res: Response) => {
     }
 };
 
-export const signup = (req: Request, res: Response) => {
-    const { username, password } = req.body;
-    
-    const newUser = signupUser(username, password);
+export const signup = async (req: Request, res: Response) => {    
+    const newUser = await signupUser(req.body);
     
     if (newUser) {
         res.status(200).json({ message: 'User registered successfully', user: newUser });
